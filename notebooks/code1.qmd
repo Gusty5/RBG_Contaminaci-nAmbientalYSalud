@@ -1,0 +1,13 @@
+---
+title: "Gaussian networks"
+author: "Gustavo Andrés Aguilar Torreblanca"
+format:
+  html: 
+    toc: true
+    html-math-method: katex
+    ebed-resources: true
+    self-contained-math: true
+    df-print: kable
+editor: source
+---
+
