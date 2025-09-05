@@ -1,27 +1,28 @@
-Variable,Posicion,Etiqueta
-FOLIO_INT,2,Folio de integrante
-municipio,36,Municipio
-h0302,38,Sexo
-h0303,39,Edad
-valor_AC_URICO,85,Resultado  Ácido úrico mg/dl
-valor_ALBU,87,Resultado  Albúmina g/dL
-valor_COL_HDL,89,Resultado  Colesterol HDL mg/dl
-valor_COL_LDL,91,Resultado  Colesterol LDL mg/dl
-valor_COLEST,93,Resultado  Colesterol total mg/dl
-valor_CREAT,95,Resultado  Creatinina mg/dl
-valor_GLU_SUERO,97,Resultado  Glucosa mg/dl
-valor_INSULINA,99,Resultado  Insulina micro UI/ml
-valor_PCR,101,Resultado  Proteína C Reactiva mg/dL
-valor_TRIG,103,Resultado  Triglicéridos mg/dl
-valor_EAG,106,Resultado Glucosa Promedio Estimada mg/dL
-valor_HB1AC,108,Resultado  Hemoglobina glucosilada. %
-valor_FERRITINA,111,Resultado Ferritina ng/mL
-valor_FOL,113,Resultado Folato ng/mL
-valor_HCST,115,Resultado Homocisteina micromol/L
-valor_PROTCREAC,117,Resultado  Proteína C Reactiva mg/L
-valor_STFR_FEB23,119,Resultado Receptor de Transferrina mg/L
-valor_VIT_B12,121,Resultado Vitamina B12 pg/mL
-valor_VIT_D,123,Resultado Vitamina D ng/mL
-estrato,129,Estrato urbanidad/ruralidad
-region,130,Region o zona de trabajo
-est_sel,131, Estrato de seleccion
+Variable        , Posicion, Etiqueta
+FOLIO_INT       ,        2, Folio de integrante
+desc_ent        ,       35, DESC_ENT
+desc_mun        ,       37, DESC_MUN
+h0302           ,       38, Sexo
+h0303           ,       39, Edad
+valor_AC_URICO  ,       85, Resultado  Ácido úrico mg/dl
+valor_ALBU      ,       87, Resultado  Albúmina g/dL
+valor_COL_HDL   ,       89, Resultado  Colesterol HDL mg/dl
+valor_COL_LDL   ,       91, Resultado  Colesterol LDL mg/dl
+valor_COLEST    ,       93, Resultado  Colesterol total mg/dl
+valor_CREAT     ,       95, Resultado  Creatinina mg/dl
+valor_GLU_SUERO ,       97, Resultado  Glucosa mg/dl
+valor_INSULINA  ,       99, Resultado  Insulina micro UI/ml
+valor_PCR       ,      101, Resultado  Proteína C Reactiva mg/dL
+valor_TRIG      ,      103, Resultado  Triglicéridos mg/dl
+valor_EAG       ,      106, Resultado Glucosa Promedio Estimada mg/dL
+valor_HB1AC     ,      108, Resultado  Hemoglobina glucosilada. %
+valor_FERRITINA ,      111, Resultado Ferritina ng/mL
+valor_FOL       ,      113, Resultado Folato ng/mL
+valor_HCST      ,      115, Resultado Homocisteina micromol/L
+valor_PROTCREAC ,      117, Resultado  Proteína C Reactiva mg/L
+valor_STFR_FEB23,      119, Resultado Receptor de Transferrina mg/L
+valor_VIT_B12   ,      121, Resultado Vitamina B12 pg/mL
+valor_VIT_D     ,      123, Resultado Vitamina D ng/mL
+estrato         ,      129, Estrato urbanidad/ruralidad
+region          ,      130, Region o zona de trabajo
+est_sel         ,      131, Estrato de seleccion
