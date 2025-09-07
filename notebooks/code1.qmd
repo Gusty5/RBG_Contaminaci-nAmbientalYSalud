@@ -11,3 +11,18 @@ format:
 editor: source
 ---
 
+
+```{r}
+data <- read.csv("../data_util/ensanut2022_muestras_selected.csv")
+```
+
+```{r}
+head(data)
+```
+
+```{r}
+
+```
+
+
+
