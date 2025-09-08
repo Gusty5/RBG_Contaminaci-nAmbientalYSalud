@@ -16,6 +16,9 @@ library(tidyverse)
 library(bnlearn)
 library(janitor)
 ```
+```{r}
+set.seed(1234)
+```
 
 
 ```{r}
@@ -207,5 +210,67 @@ scores_aic <- c(
   dag1sx = score(dag1sx, data = data, type = "aic-cg")
 )
 scores_aic
+```
+
+```{r}
+vars <- c("PC",   # PCR
+          "I",    # Insulina
+          "GS",   # Glucosa suero
+          "H",    # HbA1c
+          "CL",   # LDL
+          "CH",   # HDL
+          "T",    # Triglicéridos
+          "CT",   # Colesterol total
+          "Cr",   # Creatinina
+          "AU")   # Ácido úrico
+
+# Summary + cuantiles p25, p50, p75 para cada variable
+lapply(vars, function(v) {
+  cat("====", v, "====\n")
+  print(summary(data[[v]]))
+  print(quantile(data[[v]], probs = c(.05, .25, .5, .75, .95), na.rm = TRUE))
+  cat("\n")
+})
+```
+```{r}
+thr_PC <- quantile(data$PC, 0.75, na.rm = TRUE)
+thr_PC
+```
+
+
+### Inflamación y contaminación
+
+¿Cuál es la probabilidad de presentar inflamación clínicamente relevante (PCR ≥ 1 mg/L) en una mujer de 45 años de zona metropolitana con exposición a PM2.5 = 30 y NOx = 40?
+
+```{r}
+set.seed(1234)
+cpquery(dag1sx_fit,
+        event = (PC >= 1),   # PCR ≥ 1 mg/L
+        evidence = list(P25 = 30, NOx = 40, E = 45,
+                        S = "2", Es = "3"),
+        method = "lw", n = 1e5)
+```
+### Triglicéridos y exposición urbana
+
+¿Cuál es la probabilidad de tener triglicéridos ≥ 150 mg/dL en un hombre de 55 años que vive en zona urbana con PM2.5 = 25 y NOx = 35?
+
+```{r}
+set.seed(1234)
+cpquery(dag1sx_fit,
+        event = (T >= 150),
+        evidence = list(P25 = 25, NOx = 35, E = 55,
+                        S = "1", Es = "2"),
+        method = "lw", n = 1e5)
+```
+### HDL bajo y contaminación alta
+¿Cuál es la probabilidad de tener HDL bajo (<40 mg/dL en hombres, <50 en mujeres) en una mujer de 50 años en zona rural con PM2.5 y NOx altos?
+
+```{r}
+set.seed(1234)
+cpquery(dag1sx_fit,
+        event = (CH < 50),
+        evidence = list(P25 = 100, NOx = 200, E = 50,
+                        S = "2", Es = "1"),
+        method = "lw", n = 1e5)
 ```
 
