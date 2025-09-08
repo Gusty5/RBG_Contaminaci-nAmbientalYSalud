@@ -1,6 +1,6 @@
 ---
 title: "Gaussian networks"
-author: "Gustavo Andrés Aguilar Torreblanca"
+author: "Equipo 1"
 format:
   html: 
     toc: true
