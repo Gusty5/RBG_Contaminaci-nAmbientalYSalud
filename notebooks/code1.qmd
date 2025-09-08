@@ -338,3 +338,5 @@ score_bic_like
 NO PARAMETRICO: -225696
 ORIGINAL: -226004.9
 
+Conclusion: Si mejoro con el modelo no parametrico 
+
