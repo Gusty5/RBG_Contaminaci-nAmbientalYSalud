@@ -274,5 +274,67 @@ cpquery(dag1sx_fit,
         method = "lw", n = 1e5)
 ```
 
+```{r}
+library(mgcv)
 
+# --- 1) Ajustes por nodo según DAG1 ---
+# Raíces (sin padres): SO2, CO, NOx, COV, P10, P25, NH3, E
+m_SO2 <- lm(SO2 ~ 1, data = data)
+m_CO  <- lm(CO  ~ 1, data = data)
+m_NOx <- lm(NOx ~ 1, data = data)
+m_COV <- lm(COV ~ 1, data = data)
+m_P10 <- lm(P10 ~ 1, data = data)
+m_P25 <- lm(P25 ~ 1, data = data)
+m_NH3 <- lm(NH3 ~ 1, data = data)
+m_E   <- lm(E   ~ 1, data = data)
+
+# Hijos (con sus padres):
+m_PC <- gam(PC ~ s(P25) + s(NOx) + s(SO2) + s(CO) + s(COV) + s(P10) + s(NH3) + s(E),
+            data = data, method = "ML")
+
+m_AU <- gam(AU ~ s(SO2) + s(NOx) + s(P10) + s(P25) + s(CO) + s(E),
+            data = data, method = "ML")
+
+m_I  <- gam(I  ~ s(PC) + s(E),
+            data = data, method = "ML")
+
+m_GS <- gam(GS ~ s(I),
+            data = data, method = "ML")
+
+m_H  <- gam(H  ~ s(GS) + s(I) + s(E),
+            data = data, method = "ML")
+
+m_CL <- gam(CL ~ s(P25) + s(NOx) + s(PC) + s(E),
+            data = data, method = "ML")
+
+m_T  <- gam(T  ~ s(P25) + s(NOx) + s(PC) + s(E),
+            data = data, method = "ML")
+
+m_CH <- gam(CH ~ s(P25) + s(NOx) + s(PC) + s(E),
+            data = data, method = "ML")
+
+m_CT <- gam(CT ~ s(CL) + s(T) + s(CH) + s(E),
+            data = data, method = "ML")
+
+m_Cr <- gam(Cr ~ s(PC) + s(CT) + s(T) + s(CH) + s(E),
+            data = data, method = "ML")
+
+# --- 2) BIC total y "score" estilo bnlearn (mayor = mejor) ---
+mods <- list(
+  m_SO2, m_CO, m_NOx, m_COV, m_P10, m_P25, m_NH3, m_E,   # raíces
+  m_PC, m_AU, m_I, m_GS, m_H, m_CL, m_T, m_CH, m_CT, m_Cr  # hijos
+)
+
+bic_by_node <- sapply(mods, BIC)
+bic_total   <- sum(bic_by_node)
+
+# score tipo bnlearn (bic-g): mayor = mejor
+score_bic_like <- -0.5 * bic_total
+
+bic_total
+score_bic_like
+
+```
+NO PARAMETRICO: -225696
+ORIGINAL: -226004.9
 
