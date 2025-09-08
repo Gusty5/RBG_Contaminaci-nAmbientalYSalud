@@ -40,7 +40,7 @@ data
 # AU, ácido úrico      | CH, Col HDL | CL, col LDL    | CT, col | Cr, creatinina | GS, glucosa | I, insulina
 # PC, proteina C react | T, trigli   | H, hemoglobina | E, edad | S, sexo        | Es, estrato
 
-colnames(data) = c("AU", "CH", "CL", "CT", "Cr", "GS", "I", "PC", "T", "H", "E", "S", "Es", "SO2", "CO", "NOx", "COV", "P10", "P25", "NH3") 
+colnames(data) = c("AU", "CH", "CL", "CT", "Cr", "GS", "I", "PC", "T", "H", "S", "E", "Es", "SO2", "CO", "NOx", "COV", "P10", "P25", "NH3") 
 ```
 
 ```{r}
@@ -118,6 +118,94 @@ dag3 <- model2network(dag3_string)
 ```{r}
 graphviz.plot(dag3, shape = "ellipse")
 ```
+```{r}
+data_num$E <- as.numeric(data_num$E)
+sapply(data_num, class)
+```
+
+```{r}
+dag1_fit = bn.fit(dag1, data = data_num)
+dag2_fit = bn.fit(dag2, data = data_num)
+dag3_fit = bn.fit(dag3, data = data_num)
+```
+
+```{r}
+scores_bic <- c(
+  dag1 = score(dag1, data = data_num, type = "bic-g"),
+  dag2 = score(dag2, data = data_num, type = "bic-g"),
+  dag3 = score(dag3, data = data_num, type = "bic-g")
+)
+scores_bic
+```
+
+```{r}
+best_bic <- names(which.max(scores_bic))
+best_bic
+```
+
+```{r}
+scores_aic <- c(
+  dag1 = score(dag1, data = data_num, type = "aic-g"),
+  dag2 = score(dag2, data = data_num, type = "aic-g"),
+  dag3 = score(dag3, data = data_num, type = "aic-g")
+)
+
+scores_aic
+```
+
+```{r}
+best_aic <- names(which.max(scores_aic))
+best_aic
+```
+
+Tenemos dos respuestas diferentes, dependiendo del score
+
+```{r}
+data$E        <- as.numeric(data$E)      
+
+data$S  <- factor(data$S)
+data$Es <- factor(data$Es)
+```
+
+```{r}
+sapply(data, class)
+```
 
 
+```{r}
+dag1sx_string <- paste0(
+  "[SO2][CO][NOx][COV][P10][P25][NH3][E][S][Es]",
+  "[PC|P25:NOx:SO2:CO:COV:P10:NH3:E:S:Es]",
+  "[AU|SO2:NOx:P10:P25:CO:E:S:Es]",
+  "[I|PC:E:S:Es]",
+  "[GS|I]",
+  "[H|GS:I:E:S:Es]",
+  "[CL|P25:NOx:PC:E:S:Es]",
+  "[T|P25:NOx:PC:E:S:Es]",
+  "[CH|P25:NOx:PC:E:S:Es]",
+  "[CT|CL:T:CH:E:S:Es]",
+  "[Cr|PC:CT:T:CH:E:S:Es]"
+)
+
+dag1sx <- model2network(dag1sx_string)
+graphviz.plot(dag1sx, shape = "ellipse")
+```
+
+```{r}
+dag1sx_fit <- bn.fit(dag1sx, data = data)
+```
+
+```{r}
+scores_bic <- c(
+  dag1sx = score(dag1sx, data = data, type = "bic-cg")
+)
+scores_bic
+```
+
+```{r}
+scores_aic <- c(
+  dag1sx = score(dag1sx, data = data, type = "aic-cg")
+)
+scores_aic
+```
 
