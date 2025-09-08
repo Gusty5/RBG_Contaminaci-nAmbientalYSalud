@@ -54,34 +54,70 @@ data_num
 ```
 
 ```{r}
-dag_string <- paste0(
-  "[P25]",
-  "[NOx]",
-  "[PC|P25:NOx]",
-  "[H|P25:NOx:PC]",
-  "[I|PC:H]",
+dag1_string <- paste0(
+  "[SO2][CO][NOx][COV][P10][P25][NH3][E]",
+  "[PC|P25:NOx:SO2:CO:COV:P10:NH3:E]",
+  "[AU|SO2:NOx:P10:P25:CO:E]",
+  "[I|PC:E]",
   "[GS|I]",
-  "[CL|P25:NOx:PC]",
-  "[T|P25:NOx:PC]",
-  "[CH|P25:NOx:PC]",
-  "[CT|CL:T:CH]",
-  "[Cr|PC:CT:T:CH]"
+  "[H|GS:I:E]",
+  "[CL|P25:NOx:PC:E]",
+  "[T|P25:NOx:PC:E]",
+  "[CH|P25:NOx:PC:E]",
+  "[CT|CL:T:CH:E]",
+  "[Cr|PC:CT:T:CH:E]"       # <- sin AU
 )
 
-dag <- model2network(dag_string)
+dag1 <- model2network(dag1_string)
 ```
 ```{r}
-graphviz.plot(dag, shape = "ellipse")
+graphviz.plot(dag1, shape = "ellipse")
 ```
 
 
 ```{r}
-graphviz.plot(dag, shape = "ellipse")
+dag2_string <- paste0(
+  "[SO2][CO][NOx][COV][P10][P25][NH3][E]",   # todos los exógenos aquí
+  "[PC|SO2:NOx:P10:P25:NH3:CO:COV:E]",
+  "[AU|SO2:NOx:P10:P25:CO:E]",
+  "[CL|PC:P25:NOx:E]",
+  "[T|PC:P25:NOx:CO:E]",
+  "[CH|PC:P25:NOx:E]",
+  "[CT|CL:T:CH:E]",
+  "[I|PC:P25:NOx:E]",
+  "[GS|I]",
+  "[H|GS:I:E]",
+  "[Cr|PC:CT:T:CH:P25:NOx:E]"   # <- sin AU
+)
+
+dag2 <- model2network(dag2_string)
 ```
 
+```{r}
+graphviz.plot(dag2, shape = "ellipse")
+```
 
+```{r}
+dag3_string <- paste0(
+  "[SO2][CO][NOx][COV][P10][P25][NH3][E]",
+  "[PC|SO2:CO:NOx:COV:P10:P25:NH3:E]",
+  "[AU|SO2:CO:NOx:COV:P10:P25:NH3:E]",
+  "[CL|PC:E]",
+  "[T|PC:E]",
+  "[CH|PC:E]",
+  "[CT|CL:T:CH:E]",
+  "[I|PC:E]",
+  "[GS|I]",
+  "[H|GS:I:E]",
+  "[Cr|PC:E]"               # <- sin AU
+)
 
+dag3 <- model2network(dag3_string)
+```
 
+```{r}
+graphviz.plot(dag3, shape = "ellipse")
+```
 
 
 
