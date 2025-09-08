@@ -11,6 +11,12 @@ format:
 editor: source
 ---
 
+```{r}
+library(tidyverse)
+library(bnlearn)
+library(janitor)
+```
+
 
 ```{r}
 data <- read.csv("../data_util/ensanut2022_muestras_selected.csv")
@@ -21,8 +27,61 @@ head(data)
 ```
 
 ```{r}
-
+data = data |>
+        clean_names() |>
+        select(-folio_int, -est_sel, -entidad, -municipio, -region)
 ```
+
+```{r}
+data
+```
+
+```{r}
+# AU, ácido úrico      | CH, Col HDL | CL, col LDL    | CT, col | Cr, creatinina | GS, glucosa | I, insulina
+# PC, proteina C react | T, trigli   | H, hemoglobina | E, edad | S, sexo        | Es, estrato
+
+colnames(data) = c("AU", "CH", "CL", "CT", "Cr", "GS", "I", "PC", "T", "H", "E", "S", "Es", "SO2", "CO", "NOx", "COV", "P10", "P25", "NH3") 
+```
+
+```{r}
+data
+```
+
+```{r}
+data_num = data |>
+            select(-S, -Es)
+data_num
+```
+
+```{r}
+dag_string <- paste0(
+  "[P25]",
+  "[NOx]",
+  "[PC|P25:NOx]",
+  "[H|P25:NOx:PC]",
+  "[I|PC:H]",
+  "[GS|I]",
+  "[CL|P25:NOx:PC]",
+  "[T|P25:NOx:PC]",
+  "[CH|P25:NOx:PC]",
+  "[CT|CL:T:CH]",
+  "[Cr|PC:CT:T:CH]"
+)
+
+dag <- model2network(dag_string)
+```
+```{r}
+graphviz.plot(dag, shape = "ellipse")
+```
+
+
+```{r}
+graphviz.plot(dag, shape = "ellipse")
+```
+
+
+
+
 
 
 
